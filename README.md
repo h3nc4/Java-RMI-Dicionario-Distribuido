@@ -4,6 +4,12 @@
 
     Henrique Carvalho Almeida
 
+## Organização do Repositório
+
+    data/ - Dicionário serializado
+    src/ - Código fonte do projeto
+    scripts/ - Scripts de compilação e execução do projeto
+
 ## Descrição do Sistema
 
 Utilizando uma arquitetura cliente-servidor, projete e implemente um servidor que permita que clientes busquem concorrentemente o significado, adicionar uma palavra ou remover uma palavra de um dicionário distribuído. Do ponto de vista da estrutura de dados, um dicionário é uma coleção de pares chave-valor, onde cada chave única mapeia para um valor correspondente. A chave em um dicionário é geralmente usada como um identificador exclusivo para acessar o valor associado a ela. Esta estrutura permite uma busca eficiente de elementos com base em sua chave, tornando-a ideal para muitas situações onde é necessário armazenar e recuperar informações associadas a identificadores únicos. O trabalho foi projetado para demonstrar o funcionamento da invocação de més remotos baseada no Java RMI. Você deverá garantir que o sistema funcione com múltiplos clientes acessando o sistema concorrentemente. Segundo a [especificação do Java RMI](https://docs.oracle.com/javase/8/docs/technotes/tools/windows/s4-rmi-tools.html):

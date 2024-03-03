@@ -1,0 +1,6 @@
+*.java eol=lf
+*.sh eol=lf
+*.txt eol=lf
+*.md eol=lf
+
+*.class binary
