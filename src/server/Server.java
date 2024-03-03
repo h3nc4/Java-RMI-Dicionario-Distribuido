@@ -37,7 +37,7 @@ public class Server {
      * @param args input arguments
      * @throws RemoteException In case of an error in the RMI connection
      */
-    public static void main(String[] args) throws RemoteException {
+    public static void main(String[] args) {
         try {
             // Startup task: create RMI registry and bind DictionaryService
             LocateRegistry.createRegistry(1099); // Default port for RMI registry
@@ -55,6 +55,9 @@ public class Server {
             }));
         } catch (MalformedURLException e) {
             System.out.println("Error: Malformed URL");
+        } catch (RemoteException e) {
+            System.out.println("Error: Could not bind service to registry");
+            e.printStackTrace();
         }
     };
 }

@@ -21,7 +21,6 @@
 package client;
 
 import java.net.MalformedURLException;
-import java.rmi.ConnectException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -98,18 +97,25 @@ public class Client {
      * @param args input arguments
      * @throws Exception In case of an error in the RMI connection
      */
-    public static void main(String[] args) throws RemoteException {
-        while (service == null)
+    public static void main(String[] args) {
+        while (service == null) {
             try {
-                service = (Dictionary) Naming.lookup(Client.readStr("Enter the URL of the Dictionary service: ")); // "//localhost/DictionaryService"
+                service = (Dictionary) Naming.lookup(Client.readStr("\nEnter the URL for the Dictionary service.\nExample: //127.0.0.1/DictionaryService\n\nURL: "));
+                System.out.println("Connection established.");
             } catch (MalformedURLException e) {
                 System.out.println("Error: Malformed URL");
             } catch (NotBoundException e) {
                 System.out.println("Error: Service not found");
-            } catch (ConnectException e) {
+            } catch (RemoteException e) {
                 System.out.println("Error: Connection refused. Is the Server running?");
             }
-        while (true)
-            Client.app();
+            try {
+                while (true)
+                    Client.app();
+            } catch (RemoteException e) {
+                System.out.println("Error: Connection lost. Restarting...");
+                service = null;
+            }
+        }
     };
 }

@@ -44,7 +44,7 @@ public interface Dictionary extends Remote {
     /**
      * Add an item to the dictionary
      * 
-     * @param item item to add
+     * @param item    item to add
      * @param meaning meaning of the item
      * @throws RemoteException In case of an error in the RMI connection
      */
