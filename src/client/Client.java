@@ -101,7 +101,7 @@ public class Client {
     public static void main(String[] args) throws RemoteException {
         while (service == null)
             try {
-                service = (Dictionary) Naming.lookup("//localhost/DictionaryService");
+                service = (Dictionary) Naming.lookup(Client.readStr("Enter the URL of the Dictionary service: ")); // "//localhost/DictionaryService"
             } catch (MalformedURLException e) {
                 System.out.println("Error: Malformed URL");
             } catch (NotBoundException e) {
