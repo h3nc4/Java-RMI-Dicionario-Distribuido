@@ -27,17 +27,25 @@ import java.rmi.registry.LocateRegistry;
 import service.Dictionary;
 import service.DictServant;
 
+/**
+ * Server class that starts the RMI registry and binds the Dictionary service
+ */
 public class Server {
-
+    /**
+     * Main method
+     * 
+     * @param args input arguments
+     * @throws RemoteException In case of an error in the RMI connection
+     */
     public static void main(String[] args) throws RemoteException {
         try {
-
-            LocateRegistry.createRegistry(1099);
+            // Startup task: create RMI registry and bind DictionaryService
+            LocateRegistry.createRegistry(1099); // Default port for RMI registry
             Dictionary service = new DictServant();
-            Naming.rebind("DictionaryService", service);
-            service.readFromFile();
+            Naming.rebind("DictionaryService", service); // Service name registered in RMI
+            service.readFromFile(); // Startup task: read dictionary from file
             System.out.println("Server is running...");
-            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> { // Shutdown task: write dictionary to file
                 try {
                     service.writeToFile();
                     System.out.println("Server is shutting down...");

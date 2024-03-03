@@ -20,19 +20,37 @@
 
 package client;
 
+import java.net.MalformedURLException;
 import java.rmi.ConnectException;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import service.Dictionary;
 
+/**
+ * Client class that interacts with the Dictionary service
+ */
 public class Client {
+    /** Dictionary service */
     private static Dictionary service;
-    
+
+    /**
+     * Read a string from the console
+     * 
+     * @param msg message to display
+     * @return string read from the console
+     */
     public static String readStr(String msg) {
         String input = System.console().readLine(msg).trim();
         return input.isEmpty() ? readStr("ERROR: Invalid value. Type something: ") : input;
     };
-    
+
+    /**
+     * Read an integer from the console
+     * 
+     * @param msg message to display
+     * @return integer read from the console
+     */
     public static Integer readInt(String msg) {
         try {
             return Integer.parseInt(Client.readStr(msg));
@@ -40,11 +58,21 @@ public class Client {
             return readInt("ERROR: Invalid value. Type an integer: ");
         }
     };
-    
+
+    /**
+     * Display the menu
+     * 
+     * @return choice
+     */
     public static int displayMenu() {
         return readInt("\n1. Look up a word\n2. Add a word\n3. Remove a word\n4. Display dictionary\nEnter your choice: ");
     };
-    
+
+    /**
+     * Application logic
+     * 
+     * @throws RemoteException In case of an error in the RMI connection
+     */
     public static void app() throws RemoteException {
         switch (displayMenu()) {
             case 1:
@@ -63,14 +91,25 @@ public class Client {
                 System.out.println("Invalid choice");
         }
     };
-    
-    public static void main(String[] args) throws Exception {
-        try {
-            service = (Dictionary) Naming.lookup("//localhost/DictionaryService");
-            while (true)
-                Client.app();
-        } catch (ConnectException e) {
-            System.out.println("Error: Connection refused. Is the Server running?");
-        }
+
+    /**
+     * Main method
+     * 
+     * @param args input arguments
+     * @throws Exception In case of an error in the RMI connection
+     */
+    public static void main(String[] args) throws RemoteException {
+        while (service == null)
+            try {
+                service = (Dictionary) Naming.lookup("//localhost/DictionaryService");
+            } catch (MalformedURLException e) {
+                System.out.println("Error: Malformed URL");
+            } catch (NotBoundException e) {
+                System.out.println("Error: Service not found");
+            } catch (ConnectException e) {
+                System.out.println("Error: Connection refused. Is the Server running?");
+            }
+        while (true)
+            Client.app();
     };
 }

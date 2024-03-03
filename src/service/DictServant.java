@@ -32,39 +32,52 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Dictionary service implementation
+ * 
+ * @see Dictionary
+ */
 public class DictServant extends UnicastRemoteObject implements Dictionary {
+    /** Path to save file */
     private static final String FILE_PATH = "data/dictionary.ser";
+    /** Dictionary data structure */
     private Map<String, String> dictionary;
-    
+
+    /**
+     * Constructor, inits dictionary
+     * 
+     * @throws RemoteException In case of an error in the RMI connection
+     */
     public DictServant() throws RemoteException {
         super();
         dictionary = new HashMap<>();
     };
 
     @Override
-    public String lookup(String word) throws RemoteException {
-        String result = dictionary.get(word);
-        return result != null ? result : "Word not found";
+    public String lookup(String item) throws RemoteException {
+        String result = dictionary.get(item);
+        return result != null ? result : "Item not found";
     };
 
     @Override
-    public void addWord(String word, String meaning) throws RemoteException {
-        if (dictionary.put(word, meaning) != null)
-            System.out.println("Word already exists. Overwriting meaning...");
+    public void addWord(String item, String meaning) throws RemoteException {
+        if (dictionary.put(item, meaning) != null)
+            System.out.println("Item already exists. Overwriting meaning...");
     };
 
     @Override
-    public String removeWord(String word) throws RemoteException {
-        return dictionary.remove(word);
+    public String removeWord(String item) throws RemoteException {
+        String meaning = dictionary.remove(item);
+        return meaning == null ? "Item not found" : String.format("Item removed. %s: %s", item, meaning);
     };
 
     @Override
     public String getDictionary() throws RemoteException {
-        return dictionary.entrySet().stream() 
-                .sorted(Map.Entry.comparingByKey()) 
-                .map(e -> String.format("%s: %s", e.getKey(), e.getValue())) 
-                .reduce((a, b) -> a + "\n" + b) 
-                .orElse("Dictionary is empty."); 
+        return dictionary.entrySet().stream() // Stream of entries
+                .sorted(Map.Entry.comparingByKey()) // Sort by item
+                .map(e -> String.format("%s: %s", e.getKey(), e.getValue())) // Format to item: meaning
+                .reduce((a, b) -> a + "\n" + b) // Construct dictionary string
+                .orElse("Dictionary is empty.");
     };
 
     @Override

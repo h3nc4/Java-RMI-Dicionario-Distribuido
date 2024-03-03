@@ -23,18 +23,61 @@ package service;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
+/**
+ * Dictionary service interface
+ * 
+ * @see DictServant
+ */
 public interface Dictionary extends Remote {
+    /** Serial version */
     public static final long serialVersionUID = 1L;
 
-    String lookup(String word) throws RemoteException;
+    /**
+     * Lookup an item in the dictionary
+     * 
+     * @param item item to lookup
+     * @return meaning of the item
+     * @throws RemoteException In case of an error in the RMI connection
+     */
+    String lookup(String item) throws RemoteException;
 
-    void addWord(String word, String meaning) throws RemoteException;
+    /**
+     * Add an item to the dictionary
+     * 
+     * @param item item to add
+     * @param meaning meaning of the item
+     * @throws RemoteException In case of an error in the RMI connection
+     */
+    void addWord(String item, String meaning) throws RemoteException;
 
-    String removeWord(String word) throws RemoteException;
+    /**
+     * Remove an item from the dictionary
+     * 
+     * @param item item to remove
+     * @return meaning of the item
+     * @throws RemoteException In case of an error in the RMI connection
+     */
+    String removeWord(String item) throws RemoteException;
 
+    /**
+     * Get the dictionary
+     * 
+     * @return dictionary
+     * @throws RemoteException In case of an error in the RMI connection
+     */
     String getDictionary() throws RemoteException;
 
+    /**
+     * Write the dictionary to a file
+     * 
+     * @throws RemoteException In case of an error in the RMI connection
+     */
     void writeToFile() throws RemoteException;
 
+    /**
+     * Read the dictionary from a file
+     * 
+     * @throws RemoteException In case of an error in the RMI connection
+     */
     void readFromFile() throws RemoteException;
 }
