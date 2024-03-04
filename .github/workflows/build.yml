@@ -1,0 +1,43 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+
+    - name: Compile Java code
+      run: javac -d bin src/**/*.java
+
+    - name: Create client JAR
+      run: jar cfe client.jar client.Client -C bin/ .
+
+    - name: Create server JAR
+      run: jar cfe server.jar server.Server -C bin/ .
+
+    - name: Upload client JAR
+      uses: actions/upload-artifact@v4
+      with:
+        name: client-jar
+        path: client.jar
+        compression-level: 0
+
+    - name: Upload server JAR
+      uses: actions/upload-artifact@v4
+      with:
+        name: server-jar
+        path: server.jar
+        compression-level: 0
