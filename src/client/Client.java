@@ -75,7 +75,7 @@ public class Client {
     public static void app() throws RemoteException {
         switch (displayMenu()) {
             case 1:
-                System.out.printf("Meaning: %s\n", service.lookup(Client.readStr("Enter the word to look up: ")));
+                System.out.println(service.lookup(Client.readStr("Enter the word to look up: ")));
                 break;
             case 2:
                 service.addWord(Client.readStr("Enter the word to add: "), Client.readStr("Enter the meaning of the word: "));

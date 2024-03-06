@@ -56,7 +56,7 @@ public class DictServant extends UnicastRemoteObject implements Dictionary {
     @Override
     public String lookup(String item) throws RemoteException {
         String result = dictionary.get(item);
-        return result != null ? result : "Item not found";
+        return result != null ? String.format("Meaning: %s", result) : "Item not found";
     };
 
     @Override
