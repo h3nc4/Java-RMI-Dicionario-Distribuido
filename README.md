@@ -3,6 +3,7 @@
 ## Integrantes
 
     Henrique Carvalho Almeida
+    Gabriel Dolabela Marques
 
 ## Organização do Repositório
 
