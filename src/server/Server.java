@@ -31,11 +31,13 @@ import service.DictServant;
  * Server class that starts the RMI registry and binds the Dictionary service
  */
 public class Server {
+    /** This class cannot be instantiated */
+    private Server() { throw new InstantiationError("This class cannot be instantiated"); };
+
     /**
      * Main method
      * 
      * @param args input arguments
-     * @throws RemoteException In case of an error in the RMI connection
      */
     public static void main(String[] args) {
         try {

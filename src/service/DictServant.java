@@ -39,7 +39,7 @@ import java.util.Map;
  */
 public class DictServant extends UnicastRemoteObject implements Dictionary {
     /** Path to save file */
-    private static final String FILE_PATH = "data/dictionary.ser";
+    private static final String FILE_PATH = "data/dict";
     /** Dictionary data structure */
     private Map<String, String> dictionary;
 
@@ -103,7 +103,7 @@ public class DictServant extends UnicastRemoteObject implements Dictionary {
             if (!dataDir.exists())
                 dataDir.mkdir();
         } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Error reading from file");
+            System.out.println("Error reading from file. Verify file integrity or permissions.");
             e.printStackTrace();
         }
     };

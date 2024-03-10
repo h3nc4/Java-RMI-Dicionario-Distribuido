@@ -33,6 +33,9 @@ public class Client {
     /** Dictionary service */
     private static Dictionary service;
 
+    /** This class cannot be instantiated */
+    private Client() { throw new InstantiationError("This class cannot be instantiated"); };
+
     /**
      * Read a string from the console
      * 
@@ -81,7 +84,7 @@ public class Client {
                 service.addWord(Client.readStr("Enter the word to add: "), Client.readStr("Enter the meaning of the word: "));
                 break;
             case 3:
-                service.removeWord(Client.readStr("Enter the word to remove: "));
+                System.out.println(service.removeWord(Client.readStr("Enter the word to remove: ")));
                 break;
             case 4:
                 System.out.println(service.getDictionary());
@@ -97,7 +100,7 @@ public class Client {
      * @param args input arguments
      * @throws Exception In case of an error in the RMI connection
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
         while (service == null) {
             try {
                 service = (Dictionary) Naming.lookup(Client.readStr("\nEnter the URL for the Dictionary service.\nExample: //127.0.0.1/DictionaryService\n\nURL: "));
