@@ -29,8 +29,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Dictionary service implementation
@@ -50,7 +50,7 @@ public class DictServant extends UnicastRemoteObject implements Dictionary {
      */
     public DictServant() throws RemoteException {
         super();
-        dictionary = new HashMap<>();
+        dictionary = new ConcurrentHashMap<>();
     };
 
     @Override

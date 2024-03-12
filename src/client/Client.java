@@ -34,7 +34,9 @@ public class Client {
     private static Dictionary service;
 
     /** This class cannot be instantiated */
-    private Client() { throw new InstantiationError("This class cannot be instantiated"); };
+    private Client() {
+        throw new InstantiationError("This class cannot be instantiated");
+    };
 
     /**
      * Read a string from the console
@@ -43,8 +45,14 @@ public class Client {
      * @return string read from the console
      */
     public static String readStr(String msg) {
-        String input = System.console().readLine(msg).trim();
-        return input.isEmpty() ? readStr("ERROR: Invalid value. Type something: ") : input;
+        try {
+            String input = System.console().readLine(msg).trim();
+            return input.isEmpty() ? readStr("ERROR: Invalid value. Type something: ") : input;
+        } catch (NullPointerException e) {
+            System.err.println("ERROR: Console error. Exiting...");
+            System.exit(1);
+        }
+        return null;
     };
 
     /**
@@ -67,7 +75,8 @@ public class Client {
      * @return choice
      */
     public static int displayMenu() {
-        return readInt("\n1. Look up a word\n2. Add a word\n3. Remove a word\n4. Display dictionary\nEnter your choice: ");
+        return readInt(
+                "\n1. Look up a word\n2. Add a word\n3. Remove a word\n4. Display dictionary\nEnter your choice: ");
     };
 
     /**
@@ -81,7 +90,8 @@ public class Client {
                 System.out.println(service.lookup(Client.readStr("Enter the word to look up: ")));
                 break;
             case 2:
-                service.addWord(Client.readStr("Enter the word to add: "), Client.readStr("Enter the meaning of the word: "));
+                service.addWord(Client.readStr("Enter the word to add: "),
+                        Client.readStr("Enter the meaning of the word: "));
                 break;
             case 3:
                 System.out.println(service.removeWord(Client.readStr("Enter the word to remove: ")));
@@ -100,10 +110,11 @@ public class Client {
      * @param args input arguments
      * @throws Exception In case of an error in the RMI connection
      */
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         while (service == null) {
             try {
-                service = (Dictionary) Naming.lookup(Client.readStr("\nEnter the URL for the Dictionary service.\nExample: //127.0.0.1/DictionaryService\n\nURL: "));
+                service = (Dictionary) Naming.lookup(Client.readStr(
+                        "\nEnter the URL for the Dictionary service.\nExample: //127.0.0.1/DictionaryService\n\nURL: "));
                 System.out.println("Connection established.");
             } catch (MalformedURLException e) {
                 System.out.println("Error: Malformed URL");
@@ -113,7 +124,7 @@ public class Client {
                 System.out.println("Error: Connection refused. Is the Server running?");
             }
             try {
-                while (true)
+                while (service != null)
                     Client.app();
             } catch (RemoteException e) {
                 System.out.println("Error: Connection lost. Restarting...");
