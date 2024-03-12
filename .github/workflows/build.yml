@@ -23,10 +23,10 @@ jobs:
       run: javac -d bin src/**/*.java
 
     - name: Create client JAR
-      run: jar cfe client.jar client.Client -C bin/ .
+      run: jar cfe client.jar client.Client -C bin/ client -C bin/ service README.md LICENSE
 
     - name: Create server JAR
-      run: jar cfe server.jar server.Server -C bin/ .
+      run: jar cfe server.jar server.Server -C bin/ server -C bin/ service README.md LICENSE
 
     - name: Upload client JAR
       uses: actions/upload-artifact@v4

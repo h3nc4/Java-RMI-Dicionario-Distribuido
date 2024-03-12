@@ -19,7 +19,7 @@ jobs:
         git checkout -b gh-pages
 
     - name: Generate Javadoc
-      run: javadoc -private -d docs -sourcepath src/ src/**/*
+      run: javadoc -private -d docs -sourcepath src/ -subpackages client server service
 
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
