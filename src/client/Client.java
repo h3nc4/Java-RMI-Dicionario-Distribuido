@@ -43,8 +43,14 @@ public class Client {
      * @return string read from the console
      */
     public static String readStr(String msg) {
-        String input = System.console().readLine(msg).trim();
-        return input.isEmpty() ? readStr("ERROR: Invalid value. Type something: ") : input;
+        try {
+            String input = System.console().readLine(msg).trim();
+            return input.isEmpty() ? readStr("ERROR: Invalid value. Type something: ") : input;
+        } catch (NullPointerException e) {
+            System.err.println("ERROR: Console error. Exiting...");
+            System.exit(1);
+        }
+        return null;
     };
 
     /**
@@ -100,7 +106,7 @@ public class Client {
      * @param args input arguments
      * @throws Exception In case of an error in the RMI connection
      */
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         while (service == null) {
             try {
                 service = (Dictionary) Naming.lookup(Client.readStr("\nEnter the URL for the Dictionary service.\nExample: //127.0.0.1/DictionaryService\n\nURL: "));
@@ -113,7 +119,7 @@ public class Client {
                 System.out.println("Error: Connection refused. Is the Server running?");
             }
             try {
-                while (true)
+                while (service != null)
                     Client.app();
             } catch (RemoteException e) {
                 System.out.println("Error: Connection lost. Restarting...");
